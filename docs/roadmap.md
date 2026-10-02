@@ -31,3 +31,4 @@ Phases 2 and 3 share the 30-day Entra ID P2 trial, so Phase 2 should start only 
 - [ ] Rebalance nodes: migrate a VM off pve3 to pve
 - [ ] Update pve2 and pve3 to Proxmox 9.2.x to match pve
 - [ ] Add RAM to one node (16-32 GB)
+- [ ] Move wind01 from IDE/e1000 to VirtIO disk and NIC; consider CPU type host

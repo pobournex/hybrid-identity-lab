@@ -4,6 +4,7 @@ Run in numbered order. All passwords are entered at hidden prompts; nothing secr
 
 | Script | Run on | Purpose |
 | --- | --- | --- |
+| `00-dc-promote.ps1` | wind01 | Install AD DS, create forest `homelab.internal` |
 | `01-upn-ou-groups.ps1` | DC | UPN suffix, LabUsers OU, department groups |
 | `02-create-users.ps1` | DC | Test users from `lab-users.csv`, group membership |
 | `03-lockout-policy.ps1` | DC | 5 attempts / 15 minute lockout |

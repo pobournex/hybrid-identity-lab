@@ -69,7 +69,7 @@ Authenticated Users keeps Read because computers must be able to read every GPO 
 
 ## Client VM build: CLIENT01
 
-The lab started with one Windows VM: **wind01** (VM 301 on pve3), the domain controller that runs Active Directory and DNS for `homelab.internal`. A DC can't serve as a test machine, because regular domain users are not allowed to log on to a domain controller. Testing user logons and user Group Policy needs a separate, domain-joined workstation, so CLIENT01 was built to play the role of an employee's PC.
+The lab started with one Windows VM: **wind01** (VM 301 on pve3), the domain controller that runs Active Directory and DNS for `homelab.internal`. Its build is documented in [Phase 1a](phase-1a-dc-build.md). A DC can't serve as a test machine, because regular domain users are not allowed to log on to a domain controller. Testing user logons and user Group Policy needs a separate, domain-joined workstation, so CLIENT01 was built to play the role of an employee's PC.
 
 CLIENT01 went on pve because pve3 (with the DC) was at 97% RAM and pve2 at 83%. The two VMs sit on the same LAN (192.168.40.0/24), so placement doesn't affect how they talk.
 
@@ -128,6 +128,10 @@ CLIENT01 went on pve because pve3 (with the DC) was at 97% RAM and pve2 at 83%. 
 4. `Add-Computer -NewName CLIENT01` joined the domain but the rename failed with "The directory service is busy", a known quirk of join + rename in one step. Fixed with a restart, then `Rename-Computer -DomainCredential HOMELAB\Administrator -Restart`.
 5. Verified: Name CLIENT01, Domain homelab.internal, PartOfDomain True.
 
+![Rename-Computer prompting for HOMELAB\Administrator credentials](../screenshots/phase-1/client01-rename-credential.png)
+
+![RDP session ended: CLIENT01 restarting after the rename](../screenshots/phase-1/client01-rename-restart.png)
+
 The VirtIO guest-tools installer stalled at "Preparing to install"; the network driver was already loaded during setup, so it was deferred.
 
 **User logon, password change and GPO verification**
@@ -136,9 +140,15 @@ Each test user was created with a temporary password and "change password at nex
 
 1. On the DC, set a fresh temporary password if the original is unknown.
 2. Proxmox console on CLIENT01 -> sign out of labadmin -> **Other user** -> `akua.darko@lab.obnixapp.com` with the temporary password -> set a new password when prompted. Windows builds her profile on first logon.
+
+![CLIENT01 Other user sign-in, disconnecting the labadmin RDP session](../screenshots/phase-1/client01-other-user-signin.png)
 3. Right-click Start -> Run -> `control`. Result: "This operation has been cancelled due to restrictions in effect on this computer." The GPO applies to Finance.
+
+![Akua (Finance): This operation has been cancelled due to restrictions](../screenshots/phase-1/gpo-akua-blocked.png)
 4. Sign out -> Other user -> `ama.mensah@lab.obnixapp.com` -> change password.
 5. Run -> `control`. Result: Control Panel opens normally. The GPO does not apply to IT.
+
+![Ama (IT): Control Panel opens normally](../screenshots/phase-1/gpo-ama-allowed.png)
 
 | User | Group | First logon | Control Panel |
 | --- | --- | --- | --- |
@@ -161,3 +171,9 @@ Troubleshooting if a policy doesn't apply: run `gpupdate /force` as the user, si
 - [ ] Grant RDP access to a lab group (domain users can't RDP by default)
 
 **Readiness results (Oct 1):** `dcdiag /q` clean; IT 2, Finance 2, HR 1 members; all UPNs on `lab.obnixapp.com`; Windows2016Forest on Server 2022 Standard Evaluation. The evaluation had 55 days left (6 rearms available) and was rearmed on Oct 2 for a fresh 180 days. Time sync failed the check: the DC ran on a free-running local clock. Fixed by pointing it at external NTP; it now syncs from pool.ntp.org at stratum 3. Scripts: [`06-dc-time-sync.ps1`](../scripts/06-dc-time-sync.ps1), [`07-readiness-checks.ps1`](../scripts/07-readiness-checks.ps1).
+
+![Readiness checks on the DC: groups, UPNs, forest level, OS, and time sync before the NTP fix](../screenshots/phase-1/dc-readiness-checks.png)
+
+*Readiness checks before the NTP fix: the last block shows the DC on a free-running clock.*
+
+![Proxmox snapshot pre-entra-connect on VM 301](../screenshots/phase-1/dc-snapshot-pre-entra.png)

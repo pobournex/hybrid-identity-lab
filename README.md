@@ -45,6 +45,7 @@ CLIENT01 uses wind01 for DNS, domain membership, Kerberos authentication, Group 
 
 | Path | Contents |
 | --- | --- |
+| [docs/phase-1a-dc-build.md](docs/phase-1a-dc-build.md) | Domain controller build: VM hardware, AD DS promotion, verification |
 | [docs/phase-1-onprem-ad.md](docs/phase-1-onprem-ad.md) | Full Phase 1 build log: directory, policy, GPO, client build, verification, close-out |
 | [docs/lessons-learned.md](docs/lessons-learned.md) | Lessons and interview summary |
 | [docs/roadmap.md](docs/roadmap.md) | Phases 2 to 5 checklists and homelab housekeeping |
