@@ -1,6 +1,6 @@
 # Hybrid Identity Lab
 
-On-prem Active Directory on Proxmox, extended in phases to Microsoft Entra ID, Azure, AWS and SSO for homelab apps. Built to demonstrate hands-on identity and access management for DevOps and cloud engineering roles.
+A hybrid identity lab that mirrors a typical enterprise setup: on-prem Active Directory on Proxmox, extended in phases to Microsoft Entra ID, Azure, AWS and single sign-on for self-hosted apps.
 
 **Status (Oct 2, 2026):** Phase 1 (on-prem AD foundation) is complete, tested and closed out. Phase 2 (hybrid identity with Azure) is next.
 
