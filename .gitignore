@@ -1,0 +1,11 @@
+# Never commit secrets or exported credentials
+*.pfx
+*.key
+*.pem
+*credential*
+*.secret
+.env
+# OS / editor noise
+Thumbs.db
+.DS_Store
+.vscode/
