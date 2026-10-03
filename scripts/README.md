@@ -13,3 +13,5 @@ Run in numbered order. All passwords are entered at hidden prompts; nothing secr
 | `06-dc-time-sync.ps1` | DC | External NTP for the domain time source |
 | `07-readiness-checks.ps1` | DC | Pre-flight checks before Entra Connect |
 | `reset-temp-password.ps1` | DC | Fresh temporary password for test users |
+| `08-kds-root-key.ps1` | DC | KDS root key for gMSAs (Cloud Sync agent) |
+| `09-phase2-sync-test.ps1` | DC | Disable/enable test for hybrid sync |

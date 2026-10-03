@@ -2,10 +2,7 @@
 
 ## Phase 2: Hybrid identity
 
-- [ ] Create an Azure free account and Entra ID tenant
-- [ ] Verify `lab.obnixapp.com` in Entra with a Cloudflare TXT record
-- [ ] Install Entra Connect with password hash sync, scoped to the LabUsers OU
-- [ ] Test: a user created in AD appears in Entra; disabling it in AD blocks Entra sign-in
+Complete. See [phase-2-hybrid-identity.md](phase-2-hybrid-identity.md).
 
 ## Phase 3: Cloud access control
 
@@ -13,7 +10,7 @@
 - [ ] Azure RBAC assigned through synced groups
 - [ ] Deploy a small Azure resource with Terraform; test IT vs Finance access
 
-Phases 2 and 3 share the 30-day Entra ID P2 trial, so Phase 2 should start only when there are a few weeks to work on it.
+The Azure free trial (30-day credit) and the Entra ID P2 trial were not started in Phase 2; both are reserved for Phase 3.
 
 ## Phase 4: Multi-cloud and app SSO
 
