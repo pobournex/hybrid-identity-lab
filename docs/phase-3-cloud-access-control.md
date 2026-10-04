@@ -19,6 +19,8 @@ Goal: access to Azure is controlled entirely by the groups synced from on-prem A
 
 IT-Staff, Finance-Staff and HR-Staff appear in Entra as **Security** groups with **Source: Windows Server AD**. They live in the LabUsers OU, so Cloud Sync brought them over with the users. Group membership is still managed in AD.
 
+![IT-Staff, Finance-Staff and HR-Staff synced from Windows Server AD](../screenshots/phase-3/groups-synced.png)
+
 ## Step 2: Azure subscription
 
 | Item | Value |
@@ -27,6 +29,8 @@ IT-Staff, Finance-Staff and HR-Staff appear in Entra as **Security** groups with
 | Owner | Cloud admin account |
 | Budget | $5/month at billing-account scope, email alerts at 50%, 100% and forecasted 100%, plus a subscription budget alerting at 80% |
 | Expected cost | About $0: resource groups, role assignments and tags are free |
+
+![$5 monthly budget with email alerts](../screenshots/phase-3/budget-alert.png)
 
 **What happened along the way:**
 
@@ -38,6 +42,8 @@ IT-Staff, Finance-Staff and HR-Staff appear in Entra as **Security** groups with
 
 - Microsoft Entra ID P2 trial (100 licenses, 1-month term) activated through the Microsoft 365 admin center. The payment method is used only for identity verification.
 - **Licensed by group**, not by user: IT-Staff, Finance-Staff and HR-Staff. Anyone added to these groups in AD is licensed automatically. Licence assignment now happens only in the Microsoft 365 admin center; Entra links there.
+
+![Entra ID P2 licences assigned to IT-Staff, Finance-Staff and HR-Staff](../screenshots/phase-3/p2-group-licensing.png)
 - An earlier offer of the same trial auto-converted to a paid 1-year subscription; that path was avoided in favour of the admin-center trial, with the term set to 1 month and a reminder before it ends.
 
 ## Step 4: RBAC by hand, with PIM
@@ -51,6 +57,8 @@ Resource group `rg-identity-lab` in `lab-subscription`.
 
 With P2 active, the portal created both assignments as **Eligible** by default. Read access doesn't need just-in-time control, so the Finance assignment was removed in PIM and re-added as Active. Privileged write access stays just-in-time.
 
+![rg-identity-lab role assignments: IT-Staff Contributor eligible, Finance-Staff Reader active](../screenshots/phase-3/rbac-assignments.png)
+
 ### Tests
 
 Both tests write a **tag** on the resource group, which costs nothing.
@@ -59,6 +67,12 @@ Both tests write a **tag** on the resource group, which costs nothing.
 | --- | --- | --- |
 | Finance cannot change | Akua (Finance-Staff, Reader) | Can see the resource group; saving a tag fails with `AuthorizationFailed` |
 | IT must activate first | Ama (IT-Staff, eligible Contributor) | PIM -> My roles -> Activate Contributor for 1 hour with a reason; tag saved successfully |
+
+![Akua (Finance, Reader): AuthorizationFailed when saving a tag](../screenshots/phase-3/rbac-akua-denied.png)
+
+![Akua (Finance, Reader): tag change rejected](../screenshots/phase-3/rbac-akua-denied1.png)
+
+![Ama activating the eligible Contributor role in PIM](../screenshots/phase-3/pim-activation.png)
 
 The resource group's activity log shows the full just-in-time chain:
 
@@ -72,9 +86,13 @@ The resource group's activity log shows the full just-in-time chain:
 
 The activation expires on its own after one hour.
 
+![Activity log: MS-PIM creates the temporary role assignment, then Ama writes tags](../screenshots/phase-3/rbac-activity-log.png)
+
 ### Identity Protection surprise
 
 Ama's first cloud sign-in was blocked: *"We've detected something unusual about this sign-in."* With P2 active, **Identity Protection** marked her as a **risky user** (new user, new device, no MFA registered), and with no MFA she couldn't prove her identity. The cloud admin reviewed the risk and dismissed it; Ama then registered Microsoft Authenticator. Step 5 adds a risk-based Conditional Access policy so users can self-remediate with MFA instead of needing an admin.
+
+![Identity Protection: Ama flagged as a risky user on first sign-in](../screenshots/phase-3/identity-protection-risky-user.png)
 
 Related lesson: removing a user's Authenticator entry from the phone locks them out. The fix is an admin deleting the stale method under **Authentication methods** so the user can register again.
 
