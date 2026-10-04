@@ -32,6 +32,8 @@ IT-Staff, Finance-Staff and HR-Staff appear in Entra as **Security** groups with
 
 ![$5 monthly budget with email alerts](../screenshots/phase-3/budget-alert.png)
 
+![lab-subscription active with the cloud admin as Owner](../screenshots/phase-3/azure-subscription.png)
+
 **What happened along the way:**
 
 - **No free credit.** The account had already used its Azure free trial in 2025 (the sign-up credit had expired), so the billing account had to be **upgraded to pay-as-you-go** before any subscription could be created. Support plan: Basic (included, free).
@@ -44,6 +46,8 @@ IT-Staff, Finance-Staff and HR-Staff appear in Entra as **Security** groups with
 - **Licensed by group**, not by user: IT-Staff, Finance-Staff and HR-Staff. Anyone added to these groups in AD is licensed automatically. Licence assignment now happens only in the Microsoft 365 admin center; Entra links there.
 
 ![Entra ID P2 licences assigned to IT-Staff, Finance-Staff and HR-Staff](../screenshots/phase-3/p2-group-licensing.png)
+
+![Entra ID P2: 5 of 100 licences assigned through the three groups](../screenshots/phase-3/p2-licenses-assigned.png)
 - An earlier offer of the same trial auto-converted to a paid 1-year subscription; that path was avoided in favour of the admin-center trial, with the term set to 1 month and a reminder before it ends.
 
 ## Step 4: RBAC by hand, with PIM
