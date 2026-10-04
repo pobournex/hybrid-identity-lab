@@ -21,4 +21,17 @@ Add evidence images here and reference them from the docs. Suggested set:
 - `akua-signin-blocked.png` - "Your account has been locked"
 - `audit-log-disable-enable.png` - Disable account / Enable account by SyncFabric
 
-Blur personal email addresses and tenant IDs before publishing.
+## Phase 3 (to add in `screenshots/phase-3/`)
+
+- `groups-synced.png` - IT/Finance/HR groups with Source: Windows Server AD
+- `azure-subscription.png` - lab-subscription active (blur the subscription ID)
+- `budget-alert.png` - $5 budget with alerts
+- `p2-group-licensing.png` - P2 licences assigned to the three groups
+- `rbac-assignments.png` - IT Contributor eligible, Finance Reader active
+- `rbac-akua-denied.png` - AuthorizationFailed when Akua saves a tag
+- `pim-activation.png` - Ama activating Contributor
+- `rbac-ama-can-manage.png` - tag saved by Ama
+- `rbac-activity-log.png` - activity log showing the MS-PIM grant and Ama's write
+- `identity-protection-risky-user.png` - Ama flagged as a risky user
+
+Blur personal email addresses, tenant IDs, subscription IDs and any billing details before publishing.

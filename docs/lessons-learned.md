@@ -20,6 +20,15 @@
 - **Windows Server guards admin browsing.** IE Enhanced Security Configuration blocks Microsoft sign-in windows inside installers; disable it for the install, then turn it back on.
 - **Least privilege after setup.** Elevated Azure access was turned back off once it was no longer needed.
 
+## Phase 3 (so far)
+
+- **Billing gates everything.** A used free trial meant upgrading to pay-as-you-go before a subscription could exist; a budget and a free-only design kept cost at about $0.
+- **Prefer temporary elevation over loosening policy.** A tenant policy blocked the new subscription; elevating briefly, then dropping back, kept the safer setting in place.
+- **P2 changes defaults.** Role assignments became PIM-eligible, and Identity Protection started flagging first sign-ins. Know what a licence switches on.
+- **Just-in-time for write, standing for read.** IT activates Contributor when needed; Finance keeps Reader. The activity log records every step, including the MS-PIM grant.
+- **Test with free operations.** Writing a tag proves write access without creating billable resources.
+- **Don't delete the only MFA method.** Removing an Authenticator entry from the phone locks the user out until an admin resets the method.
+
 ## Interview summary (about 30 seconds)
 
 > "I built an on-prem Active Directory lab on Proxmox: a domain controller, an OU with department groups and users created in PowerShell, an account lockout policy, and a GPO targeted with security filtering. I joined a Windows 11 client and proved the policy: Finance users were blocked from Control Panel, IT users weren't. Then I synced it to Entra ID with Cloud Sync, scoped to one OU with password hash sync, and proved that disabling a user once in AD blocks their cloud sign-in. Next: Conditional Access and Azure RBAC through synced groups."

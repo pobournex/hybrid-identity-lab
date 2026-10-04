@@ -6,11 +6,14 @@ Complete. See [phase-2-hybrid-identity.md](phase-2-hybrid-identity.md).
 
 ## Phase 3: Cloud access control
 
-- [ ] Start the Entra ID P2 trial; Conditional Access requiring MFA
-- [ ] Azure RBAC assigned through synced groups
-- [ ] Deploy a small Azure resource with Terraform; test IT vs Finance access
+In progress. See [phase-3-cloud-access-control.md](phase-3-cloud-access-control.md).
 
-The Azure free trial (30-day credit) and the Entra ID P2 trial were not started in Phase 2; both are reserved for Phase 3.
+- [x] Synced groups confirmed in Entra
+- [x] Azure subscription and budget
+- [x] Entra ID P2 trial, licensed by group
+- [x] RBAC by hand: IT Contributor (PIM eligible), Finance Reader (active); both tested
+- [ ] Conditional Access: break-glass account, require MFA, block legacy auth, risk-based MFA
+- [ ] Codify the same RBAC in Terraform and confirm `terraform plan` shows no drift
 
 ## Phase 4: Multi-cloud and app SSO
 
@@ -21,7 +24,7 @@ The Azure free trial (30-day credit) and the Entra ID P2 trial were not started 
 
 - [ ] windows_exporter on the DC; Prometheus alerts for DC down and failed-logon spikes, routed to PagerDuty and Discord
 - [ ] gMSA for service accounts, LAPS for local admin passwords
-- [ ] Smart card / YubiKey logon with AD Certificate Services
+- [ ] Smart card / YubiKey logon with AD Certificate Services; LDAPS and LDAP signing / channel binding on the DC
 
 ## Homelab housekeeping
 
