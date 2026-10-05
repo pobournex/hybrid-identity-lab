@@ -23,7 +23,7 @@ Add evidence images here and reference them from the docs. Suggested set:
 
 ## Phase 3 (to add in `screenshots/phase-3/`)
 
-- `groups-synced.png` - IT/Finance/HR groups with Source: Windows Server AD
+- `groups-synced.png` - IT/Finance/HR security groups
 - `azure-subscription.png` - lab-subscription active (blur the subscription ID)
 - `budget-alert.png` - $5 budget with alerts
 - `p2-group-licensing.png` - P2 licences assigned to the three groups
