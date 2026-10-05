@@ -96,7 +96,6 @@ The activation expires on its own after one hour.
 
 Ama's first cloud sign-in was blocked: *"We've detected something unusual about this sign-in."* With P2 active, **Identity Protection** marked her as a **risky user** (new user, new device, no MFA registered), and with no MFA she couldn't prove her identity. The cloud admin reviewed the risk and dismissed it; Ama then registered Microsoft Authenticator. Step 5 adds a risk-based Conditional Access policy so users can self-remediate with MFA instead of needing an admin.
 
-![Identity Protection: Ama flagged as a risky user on first sign-in](../screenshots/phase-3/identity-protection-risky-user.png)
 
 Related lesson: removing a user's Authenticator entry from the phone locks them out. The fix is an admin deleting the stale method under **Authentication methods** so the user can register again.
 
