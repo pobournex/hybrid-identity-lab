@@ -32,6 +32,5 @@ Add evidence images here and reference them from the docs. Suggested set:
 - `pim-activation.png` - Ama activating Contributor
 - `rbac-ama-can-manage.png` - tag saved by Ama
 - `rbac-activity-log.png` - activity log showing the MS-PIM grant and Ama's write
-- `identity-protection-risky-user.png` - Ama flagged as a risky user
 
 Blur personal email addresses, tenant IDs, subscription IDs and any billing details before publishing.
