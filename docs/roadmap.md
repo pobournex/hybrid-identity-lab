@@ -23,7 +23,7 @@ In progress. See [phase-3-cloud-access-control.md](phase-3-cloud-access-control.
 ## Phase 5: Monitoring and hardening
 
 - [ ] windows_exporter on the DC; Prometheus alerts for DC down and failed-logon spikes, routed to PagerDuty and Discord
-- [ ] gMSA for service accounts, LAPS for local admin passwords
+- [ ] gMSA for remaining service accounts (Cloud Sync agent already runs as `provAgentgMSA`), LAPS for local admin passwords
 - [ ] Smart card / YubiKey logon with AD Certificate Services; LDAPS and LDAP signing / channel binding on the DC
 
 ## Homelab housekeeping

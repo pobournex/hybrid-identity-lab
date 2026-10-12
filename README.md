@@ -10,11 +10,11 @@ A hybrid identity lab that mirrors a typical enterprise setup: on-prem Active Di
 
 | Phase | Focus | Done when | Status |
 | --- | --- | --- | --- |
-| 1. On-prem AD foundation | Domain, DNS, OU, groups, users, lockout policy, targeted GPO, domain-joined client | Akua (Finance) blocked from Control Panel, Ama (IT) allowed | Done |
+| 1. On-prem AD foundation | Domain, DNS, OU, groups, users, lockout policy, targeted GPO, domain-joined client | Akua (Finance) is blocked from Control Panel; Ama (IT) is allowed | Done |
 | 2. Hybrid identity | Entra ID tenant, verify `lab.obnixapp.com`, Entra Cloud Sync with password hash sync | A user disabled in AD can no longer sign in to Entra | Done |
-| 3. Cloud access control | Azure RBAC through synced groups with PIM, Conditional Access and MFA, then the same RBAC in Terraform | IT-Staff can manage the resource; Finance-Staff can't | In progress |
+| 3. Cloud access control | Azure RBAC through synced groups with PIM, Conditional Access and MFA, then the same RBAC in Terraform | IT-Staff can manage the resource and Finance-Staff can't *(passed)*; `terraform plan` shows no drift against the portal build | In progress (Steps 1–5 done, Terraform next) |
 | 4. Multi-cloud and app SSO | Entra to AWS IAM Identity Center (SAML + SCIM); SSO into Grafana, Argo CD, Proxmox | One login reaches Azure, AWS and the homelab apps | Not started |
-| 5. Monitoring and hardening | Prometheus/Grafana alerts for DC health and sign-in failures; gMSA, LAPS, smart card logon | The identity layer is monitored and admin access is hardened | Not started |
+| 5. Monitoring and hardening | Prometheus/Grafana alerts for DC health and sign-in failures; LDAPS and LDAP signing/channel binding; gMSA for remaining service accounts, LAPS, smart card logon | The identity layer is monitored, LDAP is encrypted and signed, and admin access is hardened | Not started |
 
 ## Architecture (Phase 1)
 
