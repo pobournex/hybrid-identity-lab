@@ -29,6 +29,11 @@
 - **Test with free operations.** Writing a tag proves write access without creating billable resources.
 - **Don't delete the only MFA method.** Removing an Authenticator entry from the phone locks the user out until an admin resets the method.
 
+- **Create break-glass before any Conditional Access.** A policy saved with no conditions blocked every admin; the excluded break-glass account was the only way back in.
+- **A Block policy with zero conditions blocks everything.** Check the Conditions summary before saving any Block policy.
+- **Test with report-only and What If before turning a policy on.** What If only evaluates policies that are on or report-only, not off.
+- **Policy changes are not instant.** After a fix, wait a few minutes and sign in from a brand-new private window, not a reused session.
+- **Break-glass roles must be active, not PIM-eligible.** With P2, role assignments default to eligible.
 ## Interview summary (about 30 seconds)
 
 > "I built an on-prem Active Directory lab on Proxmox: a domain controller, an OU with department groups and users created in PowerShell, an account lockout policy, and a GPO targeted with security filtering. I joined a Windows 11 client and proved the policy: Finance users were blocked from Control Panel, IT users weren't. Then I synced it to Entra ID with Cloud Sync, scoped to one OU with password hash sync, and proved that disabling a user once in AD blocks their cloud sign-in. Next: Conditional Access and Azure RBAC through synced groups."

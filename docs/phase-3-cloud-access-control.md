@@ -1,6 +1,6 @@
 # Phase 3: Cloud access control
 
-**Status: in progress.** Steps 1 to 4 (groups, subscription, P2 licensing, RBAC with PIM) are done and tested. Conditional Access (step 5) and Terraform (step 6) are next.
+**Status: in progress.** Steps 1 to 5 are done and tested, including a real Conditional Access lockout and recovery through the break-glass account. Terraform (step 6) is next.
 
 Goal: access to Azure is controlled entirely by the groups synced from on-prem AD. IT can manage the lab resources, Finance can only look, and privileged access is just-in-time.
 
@@ -12,7 +12,7 @@ Goal: access to Azure is controlled entirely by the groups synced from on-prem A
 | 2 | Azure subscription + budget | Done |
 | 3 | Microsoft Entra ID P2 trial, licensed by group | Done |
 | 4 | RBAC by hand: IT Contributor (PIM eligible), Finance Reader (active) | Done, tested |
-| 5 | Conditional Access: break-glass account, require MFA, block legacy auth, risk-based MFA | Next |
+| 5 | Conditional Access: break-glass account, require MFA, block legacy auth, risk-based MFA | Done, tested |
 | 6 | Same RBAC in Terraform, `terraform plan` shows no drift | Planned |
 
 ## Step 1: Synced groups
@@ -78,6 +78,8 @@ Both tests write a **tag** on the resource group, which costs nothing.
 
 ![Ama activating the eligible Contributor role in PIM](../screenshots/phase-3/pim-activation.png)
 
+![Ama's tag saved after activating Contributor](../screenshots/phase-3/rbac-ama-can-manage.png)
+
 The resource group's activity log shows the full just-in-time chain:
 
 | Event | Initiated by |
@@ -99,15 +101,63 @@ Ama's first cloud sign-in was blocked: *"We've detected something unusual about 
 
 Related lesson: removing a user's Authenticator entry from the phone locks them out. The fix is an admin deleting the stale method under **Authentication methods** so the user can register again.
 
-## Planned: Step 5, Conditional Access
+## Step 5: Conditional Access
 
-| Policy | Users | Control |
-| --- | --- | --- |
-| Break-glass account | Cloud-only Global Admin, excluded from all policies | Long random password in a password manager, MFA registered |
-| CA01 Require MFA | All users except break-glass | Grant: require MFA (replaces security defaults, which must be turned off) |
-| CA02 Block legacy authentication | All users except break-glass | Block Exchange ActiveSync and other legacy clients |
-| CA03 Risky sign-ins | All users except break-glass | Medium/high sign-in risk: require MFA (self-remediation) |
+Security defaults were turned off and replaced with three Conditional Access policies. A break-glass account was created first, so a bad policy could never lock out every administrator.
 
+| Item | Setting |
+| --- | --- |
+| Break-glass account | Cloud-only `breakglass@<tenant>.onmicrosoft.com`; Global Administrator **active and permanent**; long random password in a password manager; its own MFA; excluded from every policy |
+| CA01 Require MFA for all users | All users except break-glass; all resources; grant access with MFA |
+| CA02 Block legacy authentication | All users except break-glass; all resources; client apps: Exchange ActiveSync and other clients; block access |
+| CA03 Risky sign-ins require MFA | All users except break-glass; all resources; sign-in risk medium and high; grant access with MFA |
+
+Notes:
+
+- With P2 active, the break-glass Global Administrator role was first created as **PIM-eligible**, leaving nothing under active assignments. It was changed to **Active, permanent**: an emergency account cannot depend on PIM activation.
+- When saving each policy, the portal offers to exclude the current admin. That was declined: the daily admin stays under MFA, and break-glass is the only exclusion.
+
+### Incident: locked out by CA02
+
+The day after the policies went on, the admin account could no longer open the Azure portal: error **53003, blocked by Conditional Access**.
+
+| Time (Oct 11) | Event |
+| --- | --- |
+| 20:12 | Admin and personal-account sign-ins to the Azure portal fail with 53003 |
+| 21:19 | Break-glass signs in successfully; Conditional Access shows **Not applied** |
+| 21:30 | CA02 found with **0 conditions** and **Block access**; turned off |
+| 21:42 | Admin still blocked: the change had not yet taken effect, and the browser reused the blocked session |
+| 22:07 | Admin signs in normally |
+| 23:10 to 23:20 | CA02 fixed, tested with What If in report-only mode, then turned back on |
+
+**Root cause:** CA02's client-apps condition never saved. With 0 conditions, "Block access" applied to every user, every app and every client, so it blocked normal browser sign-ins. Only the excluded break-glass account still worked.
+
+![Sign-in logs: break-glass Not applied, admin blocked by Conditional Access](../screenshots/phase-3/ca-signin-log-breakglass-vs-admin.png)
+
+![CA02 with 0 conditions and Block access: the root cause](../screenshots/phase-3/ca02-root-cause.png)
+
+During the investigation, CA01 and CA03 were checked as well; both were correctly set to grant access with MFA.
+
+![CA01 grant checked: require MFA, not block](../screenshots/phase-3/ca01-root-cause.png)
+
+**Fix:** CA02 client apps set to Exchange ActiveSync and other clients only (1 condition selected), saved in report-only mode, verified with What If, then turned on.
+
+![CA02 fixed: 1 condition, client apps limited to legacy clients](../screenshots/phase-3/ca02-fixed.png)
+
+### Verification
+
+| Test | Result |
+| --- | --- |
+| What If: admin, Azure portal, Windows, Browser | CA01 applies (MFA); CA02 not applied (client app); CA03 not applied (no sign-in risk) |
+| What If: admin, Exchange Online, Exchange ActiveSync | CA01 and CA02 apply; CA02 blocks access |
+| Sign-in logs | Break-glass: Not applied on every sign-in; admin during the incident: Failure |
+| Live | Admin signs in with MFA while all three policies are on |
+
+![What If, browser: CA02 does not apply](../screenshots/phase-3/ca-whatif-browser-not-blocked.png)
+
+![What If, Exchange ActiveSync: CA02 blocks legacy authentication](../screenshots/phase-3/ca-whatif-legacy-blocked.png)
+
+![All three Conditional Access policies on](../screenshots/phase-3/ca-policies-list2.png)
 ## Planned: Step 6, RBAC as code
 
 Recreate the resource group and both role assignments in Terraform (`azurerm_resource_group`, `azurerm_role_assignment`, with PIM eligibility via `azurerm_pim_eligible_role_assignment`), then confirm `terraform plan` reports no changes against the hand-built setup.

@@ -12,7 +12,7 @@ In progress. See [phase-3-cloud-access-control.md](phase-3-cloud-access-control.
 - [x] Azure subscription and budget
 - [x] Entra ID P2 trial, licensed by group
 - [x] RBAC by hand: IT Contributor (PIM eligible), Finance Reader (active); both tested
-- [ ] Conditional Access: break-glass account, require MFA, block legacy auth, risk-based MFA
+- [x] Conditional Access: break-glass account, require MFA, block legacy auth, risk-based MFA
 - [ ] Codify the same RBAC in Terraform and confirm `terraform plan` shows no drift
 
 ## Phase 4: Multi-cloud and app SSO
