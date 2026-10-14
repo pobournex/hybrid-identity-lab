@@ -1,6 +1,6 @@
 # Phase 3: Cloud access control
 
-**Status: in progress.** Steps 1 to 5 are done and tested, including a real Conditional Access lockout and recovery through the break-glass account. Terraform (step 6) is next.
+**Status: complete.** All five steps are done and tested, including a real Conditional Access lockout and recovery through the break-glass account.
 
 Goal: access to Azure is controlled entirely by the groups synced from on-prem AD. IT can manage the lab resources, Finance can only look, and privileged access is just-in-time.
 
@@ -13,7 +13,6 @@ Goal: access to Azure is controlled entirely by the groups synced from on-prem A
 | 3 | Microsoft Entra ID P2 trial, licensed by group | Done |
 | 4 | RBAC by hand: IT Contributor (PIM eligible), Finance Reader (active) | Done, tested |
 | 5 | Conditional Access: break-glass account, require MFA, block legacy auth, risk-based MFA | Done, tested |
-| 6 | Same RBAC in Terraform, `terraform plan` shows no drift | Planned |
 
 ## Step 1: Synced groups
 
@@ -158,6 +157,3 @@ During the investigation, CA01 and CA03 were checked as well; both were correctl
 ![What If, Exchange ActiveSync: CA02 blocks legacy authentication](../screenshots/phase-3/ca-whatif-legacy-blocked.png)
 
 ![All three Conditional Access policies on](../screenshots/phase-3/ca-policies-list2.png)
-## Planned: Step 6, RBAC as code
-
-Recreate the resource group and both role assignments in Terraform (`azurerm_resource_group`, `azurerm_role_assignment`, with PIM eligibility via `azurerm_pim_eligible_role_assignment`), then confirm `terraform plan` reports no changes against the hand-built setup.
