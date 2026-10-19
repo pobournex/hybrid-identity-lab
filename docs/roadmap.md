@@ -16,8 +16,12 @@ Complete. See [phase-3-cloud-access-control.md](phase-3-cloud-access-control.md)
 
 ## Phase 4: Multi-cloud and app SSO
 
+In progress. See [phase-4-app-sso.md](phase-4-app-sso.md).
+
+- [x] Entra SSO (OIDC) into Grafana, roles from AD groups; tested
 - [ ] Entra as the identity source for AWS IAM Identity Center (SAML + SCIM)
-- [ ] Entra SSO (OIDC) into Grafana, Argo CD and Proxmox
+- [ ] Entra SSO into Proxmox and Argo CD
+- [ ] Fix password hash sync for reset passwords (Cloud Sync agent)
 
 ## Phase 5: Monitoring and hardening
 
