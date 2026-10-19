@@ -19,7 +19,7 @@ A hybrid identity lab that mirrors a typical enterprise setup: on-prem Active Di
 ## Architecture (Phase 1)
 
 ```
-                 Proxmox cluster "Obnex-lab"  (LAN 192.168.40.0/24)
+                 Proxmox cluster "homelab"  (LAN 192.168.40.0/24)
    +-----------------------------------+        +-----------------------------------+
    | pve3                              |        | pve                               |
    |  VM 301  wind01  (Domain Ctrl)    |        |  VM 302  CLIENT01  (Workstation)  |
