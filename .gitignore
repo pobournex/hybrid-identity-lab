@@ -11,3 +11,6 @@ Thumbs.db
 .vscode/
 docs/pdf/
 docs/pdf/
+
+# Private interview notes
+docs/interview-summary.*
