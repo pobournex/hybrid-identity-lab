@@ -20,7 +20,7 @@
 - **Windows Server guards admin browsing.** IE Enhanced Security Configuration blocks Microsoft sign-in windows inside installers; disable it for the install, then turn it back on.
 - **Least privilege after setup.** Elevated Azure access was turned back off once it was no longer needed.
 
-## Phase 3 (so far)
+## Phase 3
 
 - **Billing gates everything.** A used free trial meant upgrading to pay-as-you-go before a subscription could exist; a budget and a free-only design kept cost at about $0.
 - **Prefer temporary elevation over loosening policy.** A tenant policy blocked the new subscription; elevating briefly, then dropping back, kept the safer setting in place.
