@@ -2,7 +2,7 @@
 
 A hybrid identity lab that mirrors a typical enterprise setup: on-prem Active Directory on Proxmox, extended in phases to Microsoft Entra ID, Azure, AWS and single sign-on for self-hosted apps.
 
-**Status (Oct 14, 2026):** Phases 1 to 3 are complete. Azure access is controlled by the AD-synced groups, with just-in-time Contributor for IT through PIM, standing Reader for Finance, and Conditional Access enforcing MFA and blocking legacy authentication. Phase 4 (app SSO) is next.
+**Status:** Phases 1 to 3 are complete. Azure access is controlled by the AD-synced groups, with just-in-time Contributor for IT through PIM, standing Reader for Finance, and Conditional Access enforcing MFA and blocking legacy authentication. Phase 4 is in progress: Grafana now signs in through Entra ID with roles from AD groups; AWS, Proxmox and Argo CD are next.
 
 **End goal:** on-prem AD syncs to Entra ID through Entra Cloud Sync, and Entra ID provides SSO to Azure, AWS IAM Identity Center, Grafana and Argo CD. Disabling a user once in AD removes access everywhere.
 
@@ -13,7 +13,7 @@ A hybrid identity lab that mirrors a typical enterprise setup: on-prem Active Di
 | 1. On-prem AD foundation | Domain, DNS, OU, groups, users, lockout policy, targeted GPO, domain-joined client | Akua (Finance) is blocked from Control Panel; Ama (IT) is allowed | Done |
 | 2. Hybrid identity | Entra ID tenant, verify `lab.obnixapp.com`, Entra Cloud Sync with password hash sync | A user disabled in AD can no longer sign in to Entra | Done |
 | 3. Cloud access control | Azure RBAC through synced groups with PIM, Conditional Access and MFA | IT-Staff can manage the resource; Finance-Staff can't | Done |
-| 4. Multi-cloud and app SSO | Entra to AWS IAM Identity Center (SAML + SCIM); SSO into Grafana, Argo CD, Proxmox | One login reaches Azure, AWS and the homelab apps | Not started |
+| 4. Multi-cloud and app SSO | Entra to AWS IAM Identity Center (SAML + SCIM); SSO into Grafana, Argo CD, Proxmox | One login reaches Azure, AWS and the homelab apps | In progress (Grafana done) |
 | 5. Monitoring and hardening | Prometheus/Grafana alerts for DC health and sign-in failures; LDAPS and LDAP signing/channel binding; gMSA for remaining service accounts, LAPS, smart card logon | The identity layer is monitored, LDAP is encrypted and signed, and admin access is hardened | Not started |
 
 ## Architecture (Phase 1)
@@ -49,6 +49,7 @@ CLIENT01 uses wind01 for DNS, domain membership, Kerberos authentication, Group 
 | [docs/phase-1-onprem-ad.md](docs/phase-1-onprem-ad.md) | Full Phase 1 build log: directory, policy, GPO, client build, verification, close-out |
 | [docs/phase-2-hybrid-identity.md](docs/phase-2-hybrid-identity.md) | Phase 2: Entra ID tenant, custom domain, Cloud Sync, disable/enable test |
 | [docs/phase-3-cloud-access-control.md](docs/phase-3-cloud-access-control.md) | Phase 3: subscription, P2, RBAC with PIM, Conditional Access, tests |
+| [docs/phase-4-app-sso.md](docs/phase-4-app-sso.md) | Phase 4 (in progress): Grafana SSO with Entra ID, roles from AD groups, tests |
 | [docs/lessons-learned.md](docs/lessons-learned.md) | Lessons and interview summary |
 | [docs/roadmap.md](docs/roadmap.md) | Phases 3 to 5 checklists and homelab housekeeping |
 | [scripts/](scripts/) | PowerShell used in the build, numbered in run order |
